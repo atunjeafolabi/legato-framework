@@ -10,9 +10,10 @@
  *
  */
 
-namespace Legato\Framework;
+namespace Legato\Framework\Console;
 
 use Symfony\Component\Console\Application;
+use Legato\Framework\App;
 
 class Legato
 {

@@ -10,7 +10,7 @@
  *
  */
 
-namespace Legato\Framework\Security;
+namespace Legato\Framework\Security\Auth;
 
 use Exception;
 
@@ -21,7 +21,7 @@ class Gate
     const VALID = true;
 
     /**
-     * Attempt to Authenticate based on the given credentials.
+     * Attempt to Authenticate the given user.
      *
      * @param array $credentials
      * @param bool  $remember
@@ -40,11 +40,11 @@ class Gate
         $user = static::user($authConfig, $username);
 
         /*
-         * if authentication requires email activation, we check the database using data provided
+         * if authentication requires email account activation, we check the database using data provided
          * by the developer data = ['column_name' => 'activation_value'] e.g. [ 'activated' => 1 ]
          */
         if ($user && count($authConfig['activation']) &&
-            !static::activated($authConfig['activation'], $user)) {
+            !static::activationRequired($authConfig['activation'], $user)) {
             return static::NOT_ACTIVATED;
         }
 
@@ -58,7 +58,7 @@ class Gate
         /**
          * Log in user.
          */
-        static::setLoginSession($authConfig, $user);
+        static::loginSession($authConfig, $user);
 
         /*
          * Remember the user
@@ -78,7 +78,7 @@ class Gate
      *
      * @return bool
      */
-    private static function activated(array $data, $user)
+    public static function activationRequired(array $data, $user)
     {
         $input = array_keys($data);
 
@@ -120,7 +120,7 @@ class Gate
      *
      * @throws \Exception
      */
-    private static function setLoginSession(array $authConfig, $user)
+    public static function loginSession(array $authConfig, $user)
     {
         $key = static::getFields($authConfig, true);
         $encrypted = encrypt($user->$key);
@@ -128,22 +128,21 @@ class Gate
     }
 
     /**
-     * Remember the user for X days.
+     * Remember the user for 14 days.
      *
      * @param array $authConfig
      * @param $user
-     * @param $number_of_days
      *
-     * @throws Exception
+     * @throws \Exception
      *
      * @return void
      */
-    private static function rememberMe(array $authConfig, $user, $number_of_days = 14)
+    public static function rememberMe(array $authConfig, $user)
     {
         $key = static::getFields($authConfig, true);
         $token = encrypt($user->$key);
 
-        setcookie('remember_token', $token, time() + (86400 * $number_of_days));
+        setcookie('remember_token', $token, time() + (86400 * 14));
     }
 
     /**
@@ -154,7 +153,7 @@ class Gate
      *
      * @return mixed
      */
-    private static function getFields(array $authConfig, $first = false)
+    public static function getFields(array $authConfig, $first = false)
     {
         return $first !== false ? $authConfig['fields'][0] : $authConfig['fields'];
     }

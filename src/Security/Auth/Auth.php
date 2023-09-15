@@ -10,7 +10,7 @@
  *
  */
 
-namespace Legato\Framework\Security;
+namespace Legato\Framework\Security\Auth;
 
 use Exception;
 use Legato\Framework\Request;
@@ -77,7 +77,7 @@ class Auth
                 $authConfig = getConfigPath('app', 'auth');
 
                 return Gate::user($authConfig, $decrypted);
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 return false;
             }
         }
@@ -92,7 +92,9 @@ class Auth
     {
         session()->invalidate();
         setcookie('remember_token', null, time() - 3600);
-        redirectTo((new static())->getLogOutRedirectPath());
+        $instance = new static();
+
+        redirectTo($instance->getLogOutRedirectPath());
     }
 
     /**
@@ -102,7 +104,9 @@ class Auth
      */
     protected function getLogOutRedirectPath()
     {
-        return static::getInstance()->loginRedirectTo;
+        $instance = static::getInstance();
+
+        return $instance->logoutRedirectTo;
     }
 
     /**
@@ -112,7 +116,9 @@ class Auth
      */
     protected function getLoginRedirectPath()
     {
-        return static::getInstance()->loginRedirectTo;
+        $instance = static::getInstance();
+
+        return $instance->loginRedirectTo;
     }
 
     /**
@@ -142,6 +148,13 @@ class Auth
 
     public function getInstance()
     {
-        return isset($this) ? $this : new static();
+        if (isset($this)) {
+            $obj = $this;
+        }
+        if (!isset($obj)) {
+            $obj = new static();
+        }
+
+        return $obj;
     }
 }

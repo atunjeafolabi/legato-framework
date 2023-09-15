@@ -10,7 +10,7 @@
  *
  */
 
-namespace Legato\Framework\Validator;
+namespace Legato\Framework\Validation;
 
 class AbstractRule
 {

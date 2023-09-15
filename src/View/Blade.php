@@ -10,7 +10,7 @@
  *
  */
 
-namespace Legato\Framework;
+namespace Legato\Framework\View;
 
 use Philo\Blade\Blade as LaravelBlade;
 
@@ -23,3 +23,4 @@ class Blade extends View
         echo $blade->view()->make($view, $data)->render();
     }
 }
+

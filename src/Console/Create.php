@@ -10,17 +10,17 @@
  *
  */
 
-namespace Legato\Framework;
+namespace Legato\Framework\Console;
 
 class Create
 {
     private $defaultCommands = [
-        \Legato\Framework\CreateController::class,
-        \Legato\Framework\CreatePhpUnitTest::class,
-        \Legato\Framework\CreateBasicConsoleCommand::class,
-        \Legato\Framework\WelcomeCommand::class,
-        \Legato\Framework\CreateModel::class,
-        \Legato\Framework\StartPhpInbuiltServer::class,
+        \Legato\Framework\Console\CreateController::class,
+        \Legato\Framework\Console\CreatePhpUnitTest::class,
+        \Legato\Framework\Console\CreateBasicConsoleCommand::class,
+        \Legato\Framework\Console\WelcomeCommand::class,
+        \Legato\Framework\Console\CreateModel::class,
+        \Legato\Framework\Console\StartPhpInbuiltServer::class,
     ];
 
     public $app;

@@ -10,7 +10,7 @@
  *
  */
 
-namespace Legato\Framework\Validator;
+namespace Legato\Framework\Validation;
 
 use Legato\Framework\Connection as DB;
 

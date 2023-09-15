@@ -12,7 +12,7 @@
 
 namespace Legato\Framework;
 
-use Legato\Framework\Session\SessionManager;
+use Legato\Framework\SessionManager;
 
 class TwigGlobal extends AbstractTwigGlobal
 {

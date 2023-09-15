@@ -69,8 +69,6 @@ class Encryption
             && $cipher === static::SUPPORTED_CIPHER_16) {
             return true;
         }
-
-        return false;
     }
 
     /**
@@ -84,13 +82,14 @@ class Encryption
      */
     public static function generateEncryptionKey($cipher)
     {
+        $key = null;
         if ($cipher === static::SUPPORTED_CIPHER_32) {
-            return random_bytes(static::SUPPORTED_CIPHER_32_LENGTH);
+            $key = random_bytes(static::SUPPORTED_CIPHER_32_LENGTH);
+        } elseif ($cipher === static::SUPPORTED_CIPHER_16) {
+            $key = random_bytes(static::SUPPORTED_CIPHER_16_LENGTH);
         }
 
-        if ($cipher === static::SUPPORTED_CIPHER_16) {
-            return random_bytes(static::SUPPORTED_CIPHER_16_LENGTH);
-        }
+        return $key;
     }
 
     /**

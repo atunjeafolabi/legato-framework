@@ -24,7 +24,7 @@ if (!function_exists('view')) {
      * @throws Twig_Error_Runtime
      * @throws Twig_Error_Syntax
      */
-    function view($view, $data = [], $options = [])
+    function view($view, $data = [], $options = []):void
     {
         getenv('FRAMEWORK') == 'developer' ? $path_to_views = realpath(__DIR__.'/../../resources/views') :
             $path_to_views = realpath(__DIR__.'/../../../../../resources/views');
@@ -32,11 +32,11 @@ if (!function_exists('view')) {
         switch (getenv('TEMPLATE_ENGINE')) {
             case 'blade':
 
-                new \Legato\Framework\Blade($view, $data);
+                new \Legato\Framework\View\Blade($view, $data);
                 break;
 
             default:
-                new \Legato\Framework\Twig($view, $data, $options);
+                new \Legato\Framework\View\Twig($view, $data, $options);
         }
     }
 }
@@ -282,10 +282,8 @@ if (!function_exists('getConfigPath')) {
      */
     function getConfigPath($path, $key = null)
     {
-        if (!file_exists(realpath(__DIR__.'/../../../../../config/'.$path.'.php'))) {
-            return;
-        }
         $path = require realpath(__DIR__.'/../../../../../config/'.$path.'.php');
+
         if ($key == null) {
             return $path;
         }
